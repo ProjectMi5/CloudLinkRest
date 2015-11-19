@@ -1,0 +1,35 @@
+{
+  "name": "cloudlinkrest",
+  "version": "0.0.1",
+  "description": "unified rest library to interface with CloudLink webservice",
+  "main": "rest.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ProjectMi5/CloudLinkRest.git"
+  },
+  "keywords": [
+    "cloudlink",
+    "mi5",
+    "rest",
+    "itq"
+  ],
+  "author": "Thomas Frei",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ProjectMi5/CloudLinkRest/issues"
+  },
+  "homepage": "https://github.com/ProjectMi5/CloudLinkRest#readme",
+  "dependencies": {
+    "bluebird": "^3.0.5",
+    "request": "^2.67.0",
+    "url-join": "0.0.1",
+    "winston": "^2.1.1"
+  },
+  "devDependencies": {
+    "blue-tape": "^0.1.10",
+    "tape": "^4.2.2"
+  }
+}
