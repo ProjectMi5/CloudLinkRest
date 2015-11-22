@@ -1,6 +1,8 @@
 var urljoin = require('url-join');
 var request = require('request');
 var Promise = require('bluebird');
+var moment = require('moment');
+var _ = require('underscore');
 
 var logger = require('./logger');
 
@@ -64,6 +66,23 @@ MI5REST.prototype.getOrdersByStatus = function(status){
     .then(this._safeJsonParse);
 };
 
+// not correctly implemented
+MI5REST.prototype.getOrdersFiltered = function(status){
+  var filter = {
+    status: status
+  };
+  var options = this._options({
+    target: 'getOrdersFiltered',
+    form: {filter: JSON.stringify(filter)}
+  });
+
+  logger.info('/getOrdersFiltered', status);
+  logger.debug(options);
+
+  return this._PostRequest(options)
+    .then(this._safeJsonParse);
+};
+
 MI5REST.prototype.placeOrder = function(order){
   var options = this._options({
     target: 'placeOrder',
@@ -85,8 +104,7 @@ MI5REST.prototype.placeOrderGet = function(order){
   logger.info('/placeOrderGet', order);
   logger.debug(options);
 
-  return this._GetRequest(options)
-    .then(this._safeJsonParse);
+  return this._GetRequest(options);
 };
 
 MI5REST.prototype.updateOrderStatus = function(orderid, status){
@@ -125,6 +143,77 @@ MI5REST.prototype.setBarcode = function(orderId, barcode){
   });
 
   logger.info('/setBarcode', orderId, barcode);
+  logger.debug(options);
+
+  return this._PostRequest(options)
+    .then(this._safeJsonParse);
+};
+
+MI5REST.prototype.reloadJobboardHack = function(){
+  var self = this;
+
+  var ordersPromise = [];
+
+  self.getOrdersFiltered(['in progress', 'accepted'])
+    .then(function(orders){
+      _.each(orders, function(order){
+        var orderForm = {orderId: order.orderId, date: moment().utc().format()};
+        var options = self._options({
+          target: 'updateOrder',
+          form: {order: JSON.stringify(orderForm)}
+        });
+
+        console.log('update', options);
+
+        var pro = self._PostRequest(options).then(self._safeJsonParse);
+        ordersPromise.push(pro);
+      });
+    });
+
+  return Promise.all(ordersPromise);
+};
+
+MI5REST.prototype.reloadOrderInJobboard = function(orderId){
+  return this.updateOrder({orderId: orderId, date: moment().utc().format()});
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Orders / Jobboard
+
+MI5REST.prototype.getOrdersSince = function(timestamp){
+  if(typeof timestamp == 'undefined') {
+    timestamp = moment().subtract(1,'m').utc().format(); // 1 min ago in UTC
+  }
+
+
+  var options = this._options({
+    target: 'getOrdersSince',
+    form: {
+      timestamp: timestamp
+    }
+  });
+
+  logger.info('/getOrdersSince', timestamp);
+  logger.debug(options);
+
+  return this._PostRequest(options)
+    .then(this._safeJsonParse);
+};
+
+MI5REST.prototype.getOrdersUpdatedSince = function(seconds){
+  if(typeof seconds == 'undefined') {
+    seconds = 60;
+  }
+  var timestamp = moment().subtract(seconds,'s').utc().format(); // 1 min ago in UTC
+
+  var options = this._options({
+    target: 'getOrdersUpdatedSince',
+    form: {
+      timestamp: timestamp
+    }
+  });
+
+  logger.info('/getOrdersUpdatedSince', timestamp);
   logger.debug(options);
 
   return this._PostRequest(options)
@@ -195,7 +284,7 @@ MI5REST.prototype.getRegisteredDevices = function(){
     .then(this._safeJsonParse); // do it twice, because it returns a string of regids '["regid1", "regId2", ....]'
 };
 
-MI5REST.prototype.registeDevice = function(regId){
+MI5REST.prototype.registerDevice = function(regId){
   var options = this._options({
     target: 'register',
     form: {regId:  regId }
@@ -249,12 +338,12 @@ MI5REST.prototype._PostRequest = function(options){
 MI5REST.prototype._safeJsonParse = function(body){
   try {
     var body = JSON.parse(body);
-    return new Promise(function(res){ res(body);});
+    return new Promise(function(res){ res(body);}).bind(this);
     //return body;
   } catch (err){
     logger.error(body);
     throw new Error('could not parse body json');
     //return err
-    return new Promise(function(res, rej){ rej(err);});
+    return new Promise(function(res, rej){ rej(err);}).bind(this);
   }
 };

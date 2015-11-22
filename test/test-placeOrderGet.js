@@ -10,18 +10,17 @@ test('Test placeOrderGet =======================================================
   t.pass('test-placeOrderGet.js - file loaded')
 });
 
-// now with html output it doesnt work
 test('placeOrderGet', function(t){
   return mi5Rest.placeOrderGet({recipeId: 10051, parameters:[100,40,30,10,1], marketPlaceId: 'eu'})
     .then(function(body){
-      t.equal(body.status, 'ok', 'status of request: ok');
-      t.equal(body.orderStatus, 'pending', 'orderStatus pending');
+      console.log(body);
+      t.fail('not yet implemented correctly');
     });
 });
 
 test('placeOrderGet with wrong parameters', function(t){
   return mi5Rest.placeOrderGet({recipeId: 10051, parameters:[40,30,10,1], marketPlaceId: 'eu'})
     .then(function(body){
-      t.equal(body.status, 'err', 'status of request: err, parameter number does not fit');
+      t.fail('not yet implemented correctly');
     });
 });

@@ -20,16 +20,6 @@ test('updateOrderStatus', function(t){
     });
 });
 
-test('updateOrderStatus', function(t){
-  return mi5Rest.placeOrder({recipeId: 10010, parameters: [], marketPlaceId: 'eu'})
-    .then(function(body){
-      return mi5Rest.updateOrderStatus(body.orderId, 'accepted');
-    })
-    .then(function(body){
-      t.equal(body.status, 'ok', 'status should be ok');
-    });
-});
-
 test('updateOrder', function(t){
   return mi5Rest.placeOrder({recipeId: 10010, parameters: [], marketPlaceId: 'eu'})
     .then(function(body){

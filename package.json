@@ -25,6 +25,7 @@
   "homepage": "https://github.com/ProjectMi5/CloudLinkRest#readme",
   "dependencies": {
     "bluebird": "^3.0.5",
+    "moment": "^2.10.6",
     "request": "^2.67.0",
     "underscore": "^1.8.3",
     "url-join": "0.0.1",
