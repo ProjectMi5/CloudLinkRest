@@ -17,3 +17,10 @@ test('Jobboard - getOrdersByStatus', function(t){
       t.assert(typeof body.pop().orderId != 'undefined', 'there should be an order element in body array');
     });
 });
+
+test('Jobboard - getOrdersByStatus', function(t){
+  return mi5Rest.getOrdersByStatus('accepted')
+    .then(function(body){
+      t.assert(typeof body.pop().orderId != 'undefined', 'there should be an order element in body array');
+    });
+});
