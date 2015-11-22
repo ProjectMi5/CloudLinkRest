@@ -35,6 +35,19 @@ MI5REST.prototype.isOnline = function(){
     });
 };
 
+MI5REST.prototype.reportMachineStatus = function(status){
+  var options = this._options({
+    target: 'reportMachineStatus',
+    form: {status: status} // 'out of order','working'
+  });
+
+  logger.info('/reportMachineStatus', status);
+  logger.debug(options);
+
+  return this._PostRequest(options)
+    .then(this._safeJsonParse);
+};
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Orders
 
