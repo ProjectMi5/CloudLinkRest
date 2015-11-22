@@ -13,8 +13,8 @@ test('Test HMI ===============================================================',
 
 
 test('check connection /helloWorld', function (t) {
-  return mi5Rest.checkConnection()
-    .then(function(body){
-      t.equal(body, 'Hello World!');
+  return mi5Rest.isOnline()
+    .then(function(result){
+      t.true(result, 'must be true if connection could be established to helloWorld and body is correct');
     });
 });
