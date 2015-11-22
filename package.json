@@ -4,7 +4,7 @@
   "description": "unified rest library to interface with CloudLink webservice",
   "main": "rest.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node runTests.js"
   },
   "repository": {
     "type": "git",

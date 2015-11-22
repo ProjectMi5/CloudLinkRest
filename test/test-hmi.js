@@ -1,20 +1,20 @@
 var test = require('blue-tape');
 
-var rest = require('./../rest');
-var mi5Rest = new rest('http://localhost:3001/', 'foo', 'bar');
+var config = require('./../config.js');
+
+var MI5REST = require('./../rest');
+var mi5Rest = new MI5REST(config.rest.host, config.auth.user, config.auth.password);
+
+test('Test HMI Interface ===============================================================', function(t){
+  t.plan(1);
+  t.pass('test-hmi.js - file loaded')
+});
 
 test('check connection /helloWorld', function (t) {
   return mi5Rest.checkConnection()
     .then(function(body){
       t.equal(body, 'Hello World!');
     });
-});
-
-test('getOrdersByStatus', function(t){
-  return mi5Rest.getOrdersByStatus('done')
-    .then(function(body){
-      t.pass();
-    })
 });
 
 test('placeOrder', function(t){
@@ -60,10 +60,11 @@ test('updateOrder', function(t){
     });
 });
 
-test.only('placeOrderGet', function(t){
-  return mi5Rest.placeOrderGet({recipeId: 10051, parameters:[100,40,30,10,1], marketPlaceId: 'eu'})
+// JobBoard
+
+test('getOrdersByStatus', function(t){
+  return mi5Rest.getOrdersByStatus('pending')
     .then(function(body){
-      t.equal(body.status, 'ok', 'status of request: ok');
-      t.equal(body.orderStatus, 'pending', 'orderStatus pending');
-    })
-})
+      t.assert(typeof body.pop().orderId != 'undefined', 'there should be an order element in body array');
+    });
+});
