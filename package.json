@@ -4,7 +4,8 @@
   "description": "unified rest library to interface with CloudLink webservice",
   "main": "rest.js",
   "scripts": {
-    "test": "node runTests.js"
+    "test": "node runTests.js",
+    "useLocalEnvironment": "set TEST=1 && node app.js"
   },
   "repository": {
     "type": "git",
