@@ -14,7 +14,10 @@ function MI5REST(host, user, password){
 }
 module.exports = MI5REST;
 
-MI5REST.prototype.checkConnection = function(){
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Connection
+
+MI5REST.prototype.isOnline = function(){
   var options = this._options({
     target: 'helloWorld'
   });
@@ -24,9 +27,16 @@ MI5REST.prototype.checkConnection = function(){
 
   return this._GetRequest(options)
     .then(function(body){
-      return body
+      if ( body == 'Hello World!'){
+        return true;
+      } else {
+        return false;
+      }
     });
 };
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Orders
 
 MI5REST.prototype.getOrdersByStatus = function(status){
   var options = this._options({
@@ -66,18 +76,6 @@ MI5REST.prototype.placeOrderGet = function(order){
     .then(this._safeJsonParse);
 };
 
-MI5REST.prototype.getRecipes = function(){
-  var options = this._options({
-    target: 'getRecipes'
-  });
-
-  logger.info('/getRecipes');
-  logger.debug(options);
-
-  return this._GetRequest(options)
-    .then(this._safeJsonParse);
-};
-
 MI5REST.prototype.updateOrderStatus = function(orderid, status){
   var options = this._options({
     target: 'updateOrderStatus',
@@ -98,6 +96,99 @@ MI5REST.prototype.updateOrder = function(order){
   });
 
   logger.info('/updateOrder', order);
+  logger.debug(options);
+
+  return this._PostRequest(options)
+    .then(this._safeJsonParse);
+};
+
+MI5REST.prototype.setBarcode = function(orderId, barcode){
+  var options = this._options({
+    target: 'setBarcode',
+    form: {
+      id: orderId,
+      barcode : barcode
+    }
+  });
+
+  logger.info('/setBarcode', orderId, barcode);
+  logger.debug(options);
+
+  return this._PostRequest(options)
+    .then(this._safeJsonParse);
+};
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Recipes
+
+MI5REST.prototype.getRecipes = function(){
+  var options = this._options({
+    target: 'getRecipes'
+  });
+
+  logger.info('/getRecipes');
+  logger.debug(options);
+
+  return this._GetRequest(options)
+    .then(this._safeJsonParse);
+};
+
+MI5REST.prototype.loadDefaultRecipes = function(){
+  var options = this._options({
+    target: 'loadDefaultRecipes'
+  });
+
+  logger.info('/loadDefaultRecipes');
+  logger.debug(options);
+
+  return this._GetRequest(options)
+    .then(this._safeJsonParse);
+};
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Feedback
+
+MI5REST.prototype.giveFeedback = function(orderId, like, feedbackText){
+  var feedback = {
+    productId:  orderId,
+    like:       like,
+    feedback:   feedbackText
+  };
+  var options = this._options({
+    target: 'giveFeedback',
+    form: { feedback: JSON.stringify(feedback) }
+  });
+
+  logger.info('/giveFeedback', orderId, like, feedbackText);
+  logger.debug(options);
+
+  return this._PostRequest(options)
+    .then(this._safeJsonParse);
+};
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Devices GCM
+
+MI5REST.prototype.getRegisteredDevices = function(){
+  var options = this._options({
+    target: 'getRegIds'
+  });
+
+  logger.info('/getRegIds - get all registered devices');
+  logger.debug(options);
+
+  return this._GetRequest(options)
+    .then(this._safeJsonParse)
+    .then(this._safeJsonParse); // do it twice, because it returns a string of regids '["regid1", "regId2", ....]'
+};
+
+MI5REST.prototype.registeDevice = function(regId){
+  var options = this._options({
+    target: 'register',
+    form: {regId:  regId }
+  });
+
+  logger.info('/register - register a gcm device online', regId);
   logger.debug(options);
 
   return this._PostRequest(options)
