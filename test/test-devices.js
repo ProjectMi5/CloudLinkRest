@@ -14,7 +14,7 @@ test('Test GCM Devices Functionality ===========================================
 var mockRegId = 'asdf';
 
 test('/register -- register a gcm device', function(t){
-  return mi5Rest.registeDevice(mockRegId)
+  return mi5Rest.registerDevice(mockRegId)
     .then(function(result){
       console.log(result);
     })
