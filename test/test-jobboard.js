@@ -11,16 +11,31 @@ test('Test Jobboard ============================================================
   t.pass('test-jobboard.js - file loaded')
 });
 
-test('Jobboard - getOrdersByStatus', function(t){
-  return mi5Rest.getOrdersByStatus('accepted')
-    .then(function(body){
-      t.assert(typeof body.pop().orderId != 'undefined', 'there should be an order element in body array');
+test('Jobboard - getOrdersSince', function(t){
+  return mi5Rest.getOrdersSince()
+    .then(function(result){
+      console.log(result);
     });
 });
 
-test('Jobboard - getOrdersByStatus', function(t){
-  return mi5Rest.getOrdersByStatus('accepted')
-    .then(function(body){
-      t.assert(typeof body.pop().orderId != 'undefined', 'there should be an order element in body array');
+test('Jobboard - getOrdersUpdateSince', function(t){
+  return mi5Rest.getOrdersUpdatedSince(300)
+    .then(function(result){
+      console.log(result);
     });
+});
+
+// Experimental - makes orders appear multiple times
+test.skip('Jobboard Hack', function(t){
+  return mi5Rest.reloadJobboardHack()
+    .then(function(result){
+      console.log(result);
+    })
+});
+
+test.only('Reload Special Order', function(t){
+  return mi5Rest.reloadOrderInJobboard(3)
+    .then(function(result){
+      console.log(result);
+    })
 });
