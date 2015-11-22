@@ -66,6 +66,18 @@ MI5REST.prototype.placeOrderGet = function(order){
     .then(this._safeJsonParse);
 };
 
+MI5REST.prototype.getRecipes = function(){
+  var options = this._options({
+    target: 'getRecipes'
+  });
+
+  logger.info('/getRecipes');
+  logger.debug(options);
+
+  return this._GetRequest(options)
+    .then(this._safeJsonParse);
+};
+
 MI5REST.prototype.updateOrderStatus = function(orderid, status){
   var options = this._options({
     target: 'updateOrderStatus',

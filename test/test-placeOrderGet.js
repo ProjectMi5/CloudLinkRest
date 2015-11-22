@@ -11,7 +11,7 @@ test('Test placeOrderGet =======================================================
 });
 
 // now with html output it doesnt work
-test.skip('placeOrderGet', function(t){
+test('placeOrderGet', function(t){
   return mi5Rest.placeOrderGet({recipeId: 10051, parameters:[100,40,30,10,1], marketPlaceId: 'eu'})
     .then(function(body){
       t.equal(body.status, 'ok', 'status of request: ok');
@@ -19,7 +19,7 @@ test.skip('placeOrderGet', function(t){
     });
 });
 
-test.skip('placeOrderGet with wrong parameters', function(t){
+test('placeOrderGet with wrong parameters', function(t){
   return mi5Rest.placeOrderGet({recipeId: 10051, parameters:[40,30,10,1], marketPlaceId: 'eu'})
     .then(function(body){
       t.equal(body.status, 'err', 'status of request: err, parameter number does not fit');
