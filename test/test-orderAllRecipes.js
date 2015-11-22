@@ -1,3 +1,4 @@
+var _ = require('underscore');
 var test = require('blue-tape');
 
 var config = require('./../config.js');
@@ -13,7 +14,6 @@ test('Test Ordering All Recipes Interface ======================================
 test('first, get all recipes', function(t){
   return mi5Rest.getRecipes()
     .then(function(recipes){
-      console.log(recipes);
-      t.pass('all recipes loaded');
+      t.true(_.isArray(recipes), 'all recipes loaded');
     });
 });
