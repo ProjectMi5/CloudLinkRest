@@ -5,6 +5,7 @@ var moment = require('moment');
 var _ = require('underscore');
 
 var logger = require('./logger');
+logger.level = 'error';
 
 function MI5REST(host, user, password){
   this.host = host; // http(s)://x.y.com/
@@ -25,7 +26,7 @@ MI5REST.prototype.isOnline = function(){
   });
 
   console.log('/checkConnection');
-  logger.debug(options);
+  //logger.debug(options);
 
   return this._GetRequest(options)
     .then(function(body){
@@ -44,7 +45,7 @@ MI5REST.prototype.reportMachineStatus = function(status){
   });
 
   logger.info('/reportMachineStatus', status);
-  logger.debug(options);
+  //logger.debug(options);
 
   return this._PostRequest(options)
     .then(this._safeJsonParse);
@@ -60,7 +61,7 @@ MI5REST.prototype.getOrdersByStatus = function(status){
   });
 
   logger.info('/getOrdersByStatus', status);
-  logger.debug(options);
+  //logger.debug(options);
 
   return this._PostRequest(options)
     .then(this._safeJsonParse);
@@ -77,7 +78,7 @@ MI5REST.prototype.getOrdersFiltered = function(status){
   });
 
   logger.info('/getOrdersFiltered', status);
-  logger.debug(options);
+  ////logger.debug(options);
 
   return this._PostRequest(options)
     .then(this._safeJsonParse);
@@ -90,7 +91,7 @@ MI5REST.prototype.placeOrder = function(order){
   });
 
   logger.info('/placeOrder', order);
-  logger.debug(options);
+  //logger.debug(options);
 
   return this._PostRequest(options)
     .then(this._safeJsonParse);
@@ -102,7 +103,7 @@ MI5REST.prototype.placeOrderGet = function(order){
   });
 
   logger.info('/placeOrderGet', order);
-  logger.debug(options);
+  //logger.debug(options);
 
   return this._GetRequest(options);
 };
@@ -114,7 +115,7 @@ MI5REST.prototype.updateOrderStatus = function(orderid, status){
   });
 
   logger.info('/updateOrderStatus', orderid, status);
-  logger.debug(options);
+  //logger.debug(options);
 
   return this._PostRequest(options)
     .then(this._safeJsonParse);
@@ -127,7 +128,7 @@ MI5REST.prototype.updateOrder = function(order){
   });
 
   logger.info('/updateOrder', order);
-  logger.debug(options);
+  //logger.debug(options);
 
   return this._PostRequest(options)
     .then(this._safeJsonParse);
@@ -143,7 +144,7 @@ MI5REST.prototype.setBarcode = function(orderId, barcode){
   });
 
   logger.info('/setBarcode', orderId, barcode);
-  logger.debug(options);
+  //logger.debug(options);
 
   return this._PostRequest(options)
     .then(this._safeJsonParse);
@@ -194,7 +195,7 @@ MI5REST.prototype.getOrdersSince = function(timestamp){
   });
 
   logger.info('/getOrdersSince', timestamp);
-  logger.debug(options);
+  //logger.debug(options);
 
   return this._PostRequest(options)
     .then(this._safeJsonParse);
@@ -214,7 +215,7 @@ MI5REST.prototype.getOrdersUpdatedSince = function(seconds){
   });
 
   logger.info('/getOrdersUpdatedSince', timestamp);
-  logger.debug(options);
+  //logger.debug(options);
 
   return this._PostRequest(options)
     .then(this._safeJsonParse);
@@ -229,7 +230,7 @@ MI5REST.prototype.getRecipes = function(){
   });
 
   logger.info('/getRecipes');
-  logger.debug(options);
+  //logger.debug(options);
 
   return this._GetRequest(options)
     .then(this._safeJsonParse);
@@ -241,7 +242,7 @@ MI5REST.prototype.loadDefaultRecipes = function(){
   });
 
   logger.info('/loadDefaultRecipes');
-  logger.debug(options);
+  //logger.debug(options);
 
   return this._GetRequest(options)
     .then(this._safeJsonParse);
@@ -262,7 +263,7 @@ MI5REST.prototype.giveFeedback = function(orderId, like, feedbackText){
   });
 
   logger.info('/giveFeedback', orderId, like, feedbackText);
-  logger.debug(options);
+  //logger.debug(options);
 
   return this._PostRequest(options)
     .then(this._safeJsonParse);
@@ -277,7 +278,7 @@ MI5REST.prototype.getRegisteredDevices = function(){
   });
 
   logger.info('/getRegIds - get all registered devices');
-  logger.debug(options);
+  //logger.debug(options);
 
   return this._GetRequest(options)
     .then(this._safeJsonParse)
@@ -291,7 +292,7 @@ MI5REST.prototype.registerDevice = function(regId){
   });
 
   logger.info('/register - register a gcm device online', regId);
-  logger.debug(options);
+  //logger.debug(options);
 
   return this._PostRequest(options)
     .then(this._safeJsonParse);

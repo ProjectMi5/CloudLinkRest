@@ -11,7 +11,7 @@ test('Test Recipe Functionality ================================================
   t.pass('test-recipe.js - file loaded')
 });
 
-test('load Default Recipes', function(t){
+test.skip('load Default Recipes', function(t){
   return mi5Rest.loadDefaultRecipes()
     .then(function(result){
       t.equal(result.status, 'ok', 'status should be ok');

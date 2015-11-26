@@ -33,7 +33,7 @@ test.skip('Jobboard Hack', function(t){
     })
 });
 
-test.only('Reload Special Order', function(t){
+test.skip('Reload Special Order', function(t){
   return mi5Rest.reloadOrderInJobboard(3)
     .then(function(result){
       console.log(result);
